@@ -1,0 +1,29 @@
+{
+  "INC-1001": [
+    {"author": "team-iam", "at": "2026-05-04T07:55:00Z", "body": "Confirmed: SSO callback failing TLS handshake. Investigating cert chain."},
+    {"author": "team-iam", "at": "2026-05-04T08:10:00Z", "body": "New cert was renewed but the intermediate CA bundle is missing on the IdP edge."}
+  ],
+  "INC-1002": [
+    {"author": "team-data", "at": "2026-05-05T14:25:00Z", "body": "Bulk-pricing job is taking exclusive locks on line_items. Querying pg_locks now."},
+    {"author": "team-data", "at": "2026-05-05T14:38:00Z", "body": "Confirmed lock contention. Considering pausing the bulk job."}
+  ],
+  "INC-1003": [
+    {"author": "team-payments", "at": "2026-05-05T19:10:00Z", "body": "OOMKilled on startup. Heap dump shows fraud-scoring lib loading 600MB model into memory."},
+    {"author": "release-bot", "at": "2026-05-05T19:15:00Z", "body": "Container memory limit unchanged at 512Mi from previous version."}
+  ],
+  "INC-1004": [
+    {"author": "team-platform", "at": "2026-05-05T22:45:00Z", "body": "Logging aggregator buffer is filling /var/log because Elasticsearch sink is backpressured."}
+  ],
+  "INC-1005": [
+    {"author": "team-payments", "at": "2026-05-05T10:35:00Z", "body": "DNS lookups intermittently fail. CoreDNS forwarder lost connectivity to upstream resolver."}
+  ],
+  "INC-1006": [
+    {"author": "team-ml", "at": "2026-05-03T09:30:00Z", "body": "In-memory cache has no max size or TTL. Need an LRU eviction policy."}
+  ],
+  "INC-1007": [
+    {"author": "team-data", "at": "2026-05-05T03:45:00Z", "body": "Storage layer shows the file is intact but a row hash differs. Suspecting in-flight write during dump."}
+  ],
+  "INC-1008": [
+    {"author": "team-edge", "at": "2026-05-06T08:30:00Z", "body": "Backend connection pool exhausted. Slow downstream call to inventory-service is holding connections."}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "INC-1001": [
+    {"at": "2026-05-04T07:42:00Z", "event": "ticket_created"},
+    {"at": "2026-05-04T07:43:00Z", "event": "priority_set", "value": "P1"},
+    {"at": "2026-05-04T07:45:00Z", "event": "assigned", "value": "team-iam"}
+  ],
+  "INC-1002": [
+    {"at": "2026-05-05T14:11:00Z", "event": "ticket_created"},
+    {"at": "2026-05-05T14:12:00Z", "event": "priority_set", "value": "P1"},
+    {"at": "2026-05-05T14:14:00Z", "event": "assigned", "value": "team-data"}
+  ],
+  "INC-1003": [
+    {"at": "2026-05-05T19:02:00Z", "event": "ticket_created"},
+    {"at": "2026-05-05T19:03:00Z", "event": "priority_set", "value": "P1"},
+    {"at": "2026-05-05T19:04:00Z", "event": "assigned", "value": "team-payments"}
+  ],
+  "INC-1004": [
+    {"at": "2026-05-05T22:30:00Z", "event": "ticket_created"},
+    {"at": "2026-05-05T22:31:00Z", "event": "priority_set", "value": "P2"},
+    {"at": "2026-05-05T22:32:00Z", "event": "assigned", "value": "team-platform"}
+  ],
+  "INC-1005": [
+    {"at": "2026-05-05T10:18:00Z", "event": "ticket_created"},
+    {"at": "2026-05-05T10:19:00Z", "event": "priority_set", "value": "P2"},
+    {"at": "2026-05-05T10:20:00Z", "event": "assigned", "value": "team-payments"}
+  ],
+  "INC-1006": [
+    {"at": "2026-05-03T09:00:00Z", "event": "ticket_created"},
+    {"at": "2026-05-03T09:01:00Z", "event": "priority_set", "value": "P3"},
+    {"at": "2026-05-03T09:02:00Z", "event": "assigned", "value": "team-ml"}
+  ],
+  "INC-1007": [
+    {"at": "2026-05-05T03:15:00Z", "event": "ticket_created"},
+    {"at": "2026-05-05T03:16:00Z", "event": "priority_set", "value": "P2"},
+    {"at": "2026-05-05T03:17:00Z", "event": "assigned", "value": "team-data"}
+  ],
+  "INC-1008": [
+    {"at": "2026-05-06T08:05:00Z", "event": "ticket_created"},
+    {"at": "2026-05-06T08:06:00Z", "event": "priority_set", "value": "P2"},
+    {"at": "2026-05-06T08:07:00Z", "event": "assigned", "value": "team-edge"}
+  ]
+}
