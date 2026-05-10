@@ -1,0 +1,109 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: itsm-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: itsm-ollama-init
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Pulling LLM model: ${OLLAMA_MODEL:-qwen2.5:3b}";
+        ollama pull ${OLLAMA_MODEL:-qwen2.5:3b};
+        echo "Model ready.";
+    restart: "no"
+
+  itsm-mock:
+    build:
+      context: ./itsm_mock
+    container_name: itsm-mock
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  mcp-server:
+    build:
+      context: ./mcp_server
+    container_name: itsm-mcp-server
+    environment:
+      - ITSM_BASE_URL=http://itsm-mock:8000
+    ports:
+      - "8001:8001"
+    depends_on:
+      itsm-mock:
+        condition: service_healthy
+    healthcheck:
+      # MCP server replies 405/406 to a bare GET — port-listening check is enough.
+      test: ["CMD", "python", "-c", "import socket,sys; s=socket.socket(); s.settimeout(2); s.connect(('localhost', 8001)); s.close()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  agent:
+    build:
+      context: ./agent
+    container_name: itsm-agent
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:3b}
+      - MCP_SERVER_URL=http://mcp-server:8001/mcp
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-intfloat/multilingual-e5-small}
+      - CHROMA_PERSIST_DIR=/app/chroma_data
+      - KB_DIR=/app/kb
+      - REPORTS_DIR=/app/reports
+      - TOP_K=4
+      - LOG_LEVEL=INFO
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./kb:/app/kb:ro
+      - ./reports:/app/reports
+      - chroma_data:/app/chroma_data
+      - hf_cache:/root/.cache/huggingface
+    depends_on:
+      ollama:
+        condition: service_healthy
+      mcp-server:
+        condition: service_healthy
+      ollama-init:
+        condition: service_completed_successfully
+    # Long-running REST service. CMD is set in the Dockerfile to launch
+    # uvicorn. For the legacy one-shot CLI:
+    #   docker compose run --rm agent python -m itsm_agent.interfaces.cli INC-1001
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8002/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  chroma_data:
+  hf_cache:

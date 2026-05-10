@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Pytest / coverage / type checkers
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.hypothesis/
+coverage.xml
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Project-specific runtime artifacts
+chroma_data/
+agent/chroma_data/
+hf_cache/
+ollama_data/
+*.sqlite
+*.sqlite3
+
+# Generated reports — keep README in repo, ignore generated *.md
+reports/*.md
+!reports/README.md
+
+# Pre-refactor baseline kept locally for diff reference; not for the repo
+reports_baseline/

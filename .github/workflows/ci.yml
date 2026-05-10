@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    name: ruff + pytest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: agent/pyproject.toml
+
+      - name: Install agent (with dev extras)
+        # Editable install of the package + ruff/pytest/pytest-asyncio.
+        # ChromaDB compiles hnswlib on Linux but wheels exist for python 3.12,
+        # so this should resolve from PyPI without a C toolchain step.
+        working-directory: agent
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: ruff check
+        working-directory: agent
+        run: ruff check src tests
+
+      - name: ruff format --check
+        working-directory: agent
+        run: ruff format --check src tests
+
+      - name: pytest
+        working-directory: agent
+        run: pytest -ra
